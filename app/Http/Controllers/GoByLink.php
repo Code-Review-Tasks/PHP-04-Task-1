@@ -18,9 +18,7 @@ class GoByLink extends Controller
      */
     public function __invoke(Request $request, $hash)
     {        
-        if (is_null($link = Link::findByHash($hash))) {
-            throw new ModelNotFoundException("$hash not found");
-        }
+        $link = Link::findByHashOrFail($hash);
 
         $link->visits()->create([
             'ip' => $request->ip(),

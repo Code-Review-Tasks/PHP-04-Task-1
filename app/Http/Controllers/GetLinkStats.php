@@ -19,9 +19,7 @@ class GetLinkStats extends Controller
      */
     public function __invoke(Request $request, $hash)
     {
-        if (is_null($link = Link::findByHash($hash))) {
-            throw new ModelNotFoundException("$hash not found");
-        }
+        $link = Link::findByHashOrFail($hash);
 
         $result = DB::table('visits')->selectRaw("DATE_FORMAT(created_at, '%Y-%m-%d') AS day, COUNT(*) AS total_views, COUNT(DISTINCT ip, user_agent_md5) AS unique_views")
             ->where('link_id', $link->id)->groupBy('day')->orderByDesc('day')->get();

@@ -21,9 +21,7 @@ class PatchLink extends Controller
      */
     public function __invoke(Request $request, $hash)
     {
-        if (is_null($link = Link::findByHash($hash))) {
-            throw new ModelNotFoundException("$hash not found");
-        }
+        $link = Link::findByHashOrFail($hash);
 
         $data = $request->validate([
             'long_url' => ['bail', 'required', 'url', 'max:2048', new WorkingUrl],

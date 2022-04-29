@@ -18,11 +18,7 @@ class DeleteLink extends Controller
      */
     public function __invoke(Request $request, $hash)
     {
-        if (is_null($link = Link::findByHash($hash))) {
-            throw new ModelNotFoundException("$hash not found");
-        }
-
-        $link->delete();
+        $link = Link::findByHashOrFail($hash)->delete();
 
         return 'ok';
     }

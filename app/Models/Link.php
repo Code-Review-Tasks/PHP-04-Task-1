@@ -33,7 +33,18 @@ class Link extends Model
         $decode = self::getHasher()->decode($hash);
 
         return isset($decode[0]) ? Link::find($decode[0]) : null;
-    }    
+    }
+
+    public static function findByHashOrFail($hash): Link
+    {
+        $decode = self::getHasher()->decode($hash);
+
+        if (!isset($decode[0])) {
+            throw new UnexpectedValueException("Invalid hash: $hash", 404);
+        }
+
+        return Link::findOrFail($decode[0]);
+    }
 
     /**
      * Recalculating total_views and unique_views based on visits table
