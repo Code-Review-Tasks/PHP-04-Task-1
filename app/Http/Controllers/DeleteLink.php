@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Link;
 use Illuminate\Http\Request;
 
+/**
+ * Deletes link by hash
+ */
 class DeleteLink extends Controller
 {
     /**

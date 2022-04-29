@@ -6,6 +6,9 @@ use App\Models\Link;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
+/**
+ * Returns all links
+ */
 class GetLinks extends Controller
 {
     /**

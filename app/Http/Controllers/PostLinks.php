@@ -8,6 +8,9 @@ use App\Rules\WorkingUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * Creates links from POST request
+ */
 class PostLinks extends Controller
 {
     /**

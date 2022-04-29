@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Link;
 use Illuminate\Http\Request;
 
+/**
+ * Returns all links sorted by unique views
+ */
 class GetStats extends Controller
 {
     /**

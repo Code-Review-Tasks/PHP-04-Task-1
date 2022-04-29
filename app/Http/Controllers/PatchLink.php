@@ -8,6 +8,9 @@ use App\Rules\WorkingUrl;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
+/**
+ * Updates link information by hash
+ */
 class PatchLink extends Controller
 {
     /**

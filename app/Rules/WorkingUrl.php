@@ -4,6 +4,9 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
+/**
+ * Checks if HTTP response code on given URL is >= 200 and <= 399
+ */
 class WorkingUrl implements Rule
 {
     /**

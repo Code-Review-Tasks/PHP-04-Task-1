@@ -16,7 +16,7 @@ class Link extends Model
     protected static $hasher;
 
     /**
-     * Hashids\Hashids singleton with salt
+     * Hashids\Hashids singleton with salt for converting id to hash
      */
     public static function getHasher(): Hashids
     {
@@ -34,9 +34,13 @@ class Link extends Model
         return isset($decode[0]) ? Link::find($decode[0]) : null;
     }
 
-    public function recalculateVisits()
-    {
-        // SELECT COUNT(*) AS total_views, COUNT(DISTINCT ip, user_agent_md5) AS unique_views FROM visits WHERE link_id = 11;
+    /**
+     * Recalculating total_views and unique_views based on visits table
+     *
+     * @return Link
+     */
+    public function recalculateVisits(): Link
+    {        
         $result = DB::table('visits')->selectRaw('COUNT(*) AS total_views, COUNT(DISTINCT ip, user_agent_md5) AS unique_views')->where('link_id', $this->id)->first();
 
         $this->total_views = $result->total_views;

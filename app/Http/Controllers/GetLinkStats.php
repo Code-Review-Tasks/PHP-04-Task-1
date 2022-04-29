@@ -6,6 +6,9 @@ use App\Models\Link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Returns link views statistics
+ */
 class GetLinkStats extends Controller
 {
     /**
@@ -19,8 +22,6 @@ class GetLinkStats extends Controller
         if (is_null($link = Link::findByHash($hash))) {
             throw new ModelNotFoundException("$hash not found");
         }
-        
-        // SELECT link_id, DATE_FORMAT(created_at, '%Y-%m-%d') AS day, COUNT(*) AS total_views, COUNT(DISTINCT ip, user_agent_md5) AS unique_views FROM `visits` WHERE link_id = 5 GROUP BY day ORDER BY day DESC;
 
         $result = DB::table('visits')->selectRaw("DATE_FORMAT(created_at, '%Y-%m-%d') AS day, COUNT(*) AS total_views, COUNT(DISTINCT ip, user_agent_md5) AS unique_views")
             ->where('link_id', $link->id)->groupBy('day')->orderByDesc('day')->get();
