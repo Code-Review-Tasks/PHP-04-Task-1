@@ -30,14 +30,14 @@
         </div>
         <div class="mb-3">
             <label for="cf-url">Tags space separated:</label>
-            <input
-                
+            <input                
                 @input="inputToTags($event, index)"
                 class="form-control"
                 type="text"
                 name="cf-tags"
                 id="cf-tags"
                 placeholder="homepage mylink search_engines"
+                :value="link.tags.join(' ')"
             >
         </div>
     </div>
