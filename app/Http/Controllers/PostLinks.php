@@ -26,7 +26,7 @@ class PostLinks extends Controller
         $validator = Validator::make($data, [
             '*.long_url' => ['bail', 'required', 'url', 'max:2048', new WorkingUrl],
             '*.title' => 'max:255',
-            '*.tags.*' => 'max:255|distinct|regex:@[a-z0-9_]+@i'
+            '*.tags.*' => 'max:255|regex:@[a-z0-9_]+@i'
         ]);
 
         $validator->validate();
@@ -42,6 +42,7 @@ class PostLinks extends Controller
             $link->save();
             
             if (!empty($chunk['tags'])) {
+                $chunk['tags'] = array_unique($chunk['tags']);
                 foreach ($chunk['tags'] as $tag) {
                     $tag = Tag::firstOrNew(['name' => mb_strtolower($tag)]);
                     $link->tags()->save($tag);
