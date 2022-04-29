@@ -35,15 +35,17 @@ class PostLinks extends Controller
         foreach ($data as $chunk) {
             $link = new Link(['long_url' => $chunk['long_url']]);
 
-            if ($chunk['title']) {
+            if (!empty($chunk['title'])) {
                 $link->title = $chunk['title'];
             }
 
             $link->save();
             
-            foreach ($chunk['tags'] as $tag) {
-                $tag = Tag::firstOrNew(['name' => mb_strtolower($tag)]);
-                $link->tags()->save($tag);
+            if (!empty($chunk['tags'])) {
+                foreach ($chunk['tags'] as $tag) {
+                    $tag = Tag::firstOrNew(['name' => mb_strtolower($tag)]);
+                    $link->tags()->save($tag);
+                }
             }
 
             $shortUrls[] = $link->hash;
