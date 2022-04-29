@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Hashids\Hashids;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use UnexpectedValueException;
 
 class Link extends Model
 {
@@ -32,7 +33,7 @@ class Link extends Model
         $decode = self::getHasher()->decode($hash);
 
         return isset($decode[0]) ? Link::find($decode[0]) : null;
-    }
+    }    
 
     /**
      * Recalculating total_views and unique_views based on visits table
@@ -56,7 +57,7 @@ class Link extends Model
         $decode = self::getHasher()->decode($hash);
 
         if (!isset($decode[0])) {
-            throw new ModelNotFoundException("$hash not found");
+            throw new UnexpectedValueException("Invalid hash: $hash");
         }
 
         return $query->where('id', $decode[0]);
