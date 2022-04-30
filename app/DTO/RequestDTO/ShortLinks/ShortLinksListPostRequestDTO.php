@@ -9,8 +9,8 @@ class ShortLinksListPostRequestDTO implements RequestDTOInterface
     private function __construct(
         /** @var $link ShortLinksPostRequestDTO */
         private array $links,
-    )
-    {}
+    ) {
+    }
 
     public static function makeFromArray(array $data): self
     {

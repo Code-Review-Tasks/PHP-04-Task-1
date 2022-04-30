@@ -10,8 +10,8 @@ class ShortLinksPostRequestDTO implements RequestDTOInterface
         private string $longUrl,
         private ?string $title,
         private ?array $tags,
-    )
-    {}
+    ) {
+    }
 
     public static function makeFromArray(array $data): self
     {

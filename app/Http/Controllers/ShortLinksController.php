@@ -14,11 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ShortLinksController extends Controller
 {
-
     public function __construct(
         private ShortLinksService $shortLinksService,
-    )
-    {
+    ) {
     }
 
     /**

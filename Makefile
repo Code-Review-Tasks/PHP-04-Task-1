@@ -52,3 +52,11 @@ npm-run-build:
 run-seed:
 	@docker exec -it $(userAndAppInDocker) php artisan db:seed
 
+fix:
+	@docker exec -it $(userAndAppInDocker) php vendor/bin/php-cs-fixer fix --allow-risky=yes
+
+fix-check:
+	@docker exec -it $(userAndAppInDocker) php vendor/bin/php-cs-fixer fix --dry-run --verbose --allow-risky=yes
+
+fix-check-quiet:
+	@docker exec -i $(userAndAppInDocker) php vendor/bin/php-cs-fixer fix --dry-run --quiet --allow-risky=yes

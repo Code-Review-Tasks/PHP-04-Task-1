@@ -7,13 +7,13 @@ use App\DTO\RequestDTO\ShortLinks\ShortLinksPostRequestDTO;
 use App\Libs\UrlShortener\UrlShortener;
 use App\Models\ShortLinks;
 use App\Services\Tags\TagService;
-use Illuminate\Support\Facades\DB;
 
 class ShortLinksService
 {
     public function __construct(
         private TagService $tagService,
-    ){}
+    ) {
+    }
 
     public function saveLinks(ShortLinksListPostRequestDTO $shortLinksListPostRequestDTO): void
     {
@@ -42,11 +42,10 @@ class ShortLinksService
         $shortLink->long_url = $shortLinksPostRequestDTO->getLongUrl();
         $shortLink->title = $shortLinksPostRequestDTO->getTitle();
 
-
         $shortLink->save();
 
         $tagIds = [];
-        foreach($shortLinksPostRequestDTO->getTags() as $tag) {
+        foreach ($shortLinksPostRequestDTO->getTags() as $tag) {
             $tagIds[] = $this->tagService->saveTag($tag);
         }
 
@@ -59,7 +58,7 @@ class ShortLinksService
         $shortLink->title = $shortLinksPostRequestDTO->getTitle();
 
         $tagIds = [];
-        foreach($shortLinksPostRequestDTO->getTags() as $tag) {
+        foreach ($shortLinksPostRequestDTO->getTags() as $tag) {
             $tagIds[] = $this->tagService->saveTag($tag);
         }
 
@@ -82,7 +81,7 @@ class ShortLinksService
         }
 
         if (isset($filter['tags'])) {
-            $query->whereHas('tags', function($q) use ($filter){
+            $query->whereHas('tags', function ($q) use ($filter) {
                 $q->whereIn('name', $filter['tags']);
             });
         }

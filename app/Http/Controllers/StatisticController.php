@@ -10,8 +10,7 @@ class StatisticController extends Controller
 {
     public function __construct(
         private StatisticsService $statisticsService,
-    )
-    {
+    ) {
     }
 
     /**
@@ -21,6 +20,7 @@ class StatisticController extends Controller
     public function getLinkStats(ShortLinks $shortLinks): JsonResponse
     {
         $linkStats = $this->statisticsService->getLinkStats($shortLinks);
+
         return response()->json($linkStats);
     }
 
@@ -31,6 +31,7 @@ class StatisticController extends Controller
     public function getAllStats(): JsonResponse
     {
         $linkStats = $this->statisticsService->getAllStats();
+
         return response()->json($linkStats);
     }
 }

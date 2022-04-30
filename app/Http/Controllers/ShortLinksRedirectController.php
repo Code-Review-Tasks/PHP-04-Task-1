@@ -13,8 +13,7 @@ class ShortLinksRedirectController extends Controller
 {
     public function __construct(
         private StatisticsService $statisticsService,
-    )
-    {
+    ) {
     }
 
     /**
@@ -24,6 +23,7 @@ class ShortLinksRedirectController extends Controller
     public function checkLink(Request $request, ShortLinks $shortLinks): RedirectResponse|Application|Redirector
     {
         $this->statisticsService->createStat($request, $shortLinks);
+
         return redirect($shortLinks->long_url);
     }
 }

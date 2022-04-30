@@ -7,7 +7,7 @@ use Throwable;
 
 class ShortLinksUniqueException extends Exception
 {
-    public function __construct(string $message = "long_url must be a unique string", int $code, Throwable $previous)
+    public function __construct(string $message, int $code, Throwable $previous)
     {
         parent::__construct($message, $code, $previous);
     }
