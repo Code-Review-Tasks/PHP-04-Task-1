@@ -19,4 +19,9 @@ class ShortLinks extends Model
     {
         return $this->belongsToMany(Tags::class, 'tag_short_link');
     }
+
+    public function statistics()
+    {
+        return $this->hasMany(Statistic::class);
+    }
 }

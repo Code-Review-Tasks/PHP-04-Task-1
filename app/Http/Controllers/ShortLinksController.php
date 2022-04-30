@@ -32,7 +32,6 @@ class ShortLinksController extends Controller
         $validated = $request->validated();
 
         $shortLinksListPostRequestDTO = ShortLinksListPostRequestDTO::makeFromArray($validated);
-
         $this->shortLinksService->saveLinks($shortLinksListPostRequestDTO);
 
         return response()->json(['success' => 'ok'], Response::HTTP_CREATED);
@@ -76,7 +75,6 @@ class ShortLinksController extends Controller
         $validated = $request->validated();
 
         $shortLinksPostRequestDTO = ShortLinksPostRequestDTO::makeFromArray($validated);
-
         $this->shortLinksService->updateLink($shortLinksPostRequestDTO, $shortLinks);
 
         return response()->json(['success' => 'ok']);

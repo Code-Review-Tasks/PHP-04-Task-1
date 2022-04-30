@@ -77,11 +77,11 @@ class ShortLinksService
     {
         $query = ShortLinks::with('tags');
 
-        if ($filter['title']) {
+        if (isset($filter['title'])) {
             $query->where('title', $filter['title']);
         }
 
-        if ($filter['tags']) {
+        if (isset($filter['tags'])) {
             $query->whereHas('tags', function($q) use ($filter){
                 $q->whereIn('name', $filter['tags']);
             });

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ShortLinksController;
 use App\Http\Controllers\ShortLinksRedirectController;
+use App\Http\Controllers\StatisticController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +23,5 @@ Route::patch('/links/{short_links}', [ShortLinksController::class, 'update']);
 Route::delete('/links/{short_links}', [ShortLinksController::class, 'destroy']);
 
 Route::get('/get_link/{short_links:short_url}', [ShortLinksRedirectController::class, 'checkLink']);
+Route::get('/stats/', [StatisticController::class, 'getAllStats']);
+Route::get('/stats/{short_links:short_url}', [StatisticController::class, 'getLinkStats']);
