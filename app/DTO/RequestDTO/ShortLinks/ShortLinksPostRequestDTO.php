@@ -9,6 +9,7 @@ class ShortLinksPostRequestDTO implements RequestDTOInterface
     private function __construct(
         private string $longUrl,
         private ?string $title,
+        private ?array $tags,
     )
     {}
 
@@ -17,6 +18,7 @@ class ShortLinksPostRequestDTO implements RequestDTOInterface
         return new self(
             $data['long_url'],
             $data['title'] ?? null,
+            $data['tags'] ?? null,
         );
     }
 
@@ -34,5 +36,13 @@ class ShortLinksPostRequestDTO implements RequestDTOInterface
     public function getTitle(): ?string
     {
         return $this->title;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getTags(): ?array
+    {
+        return $this->tags;
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Traits\Validation\ValidationErrorsToJson;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ShortLinksPostRequest extends FormRequest
+class ShortLinksGetListRequest extends FormRequest
 {
     use ValidationErrorsToJson;
 
@@ -27,10 +27,9 @@ class ShortLinksPostRequest extends FormRequest
     public function rules()
     {
         return [
-            '*.long_url' => 'required|url',
-            '*.title' => 'max:255',
-            '*.tags' => 'array',
-            '*.tags.*' => 'max:255',
+            'title' => 'max:255',
+            'tags' => 'array',
+            'tags.*' => 'max:255',
         ];
     }
 }

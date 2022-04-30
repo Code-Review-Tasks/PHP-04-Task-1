@@ -5,18 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShortLinks extends Model
+class Tags extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'long_url',
-        'title',
-        'tags',
+        'name',
     ];
 
-    public function tags()
+    public function shortLinks()
     {
-        return $this->belongsToMany(Tags::class, 'tag_short_link');
+        return $this->belongsToMany(ShortLinks::class, 'tag_short_link');
     }
 }
