@@ -60,3 +60,9 @@ fix-check:
 
 fix-check-quiet:
 	@docker exec -i $(userAndAppInDocker) php vendor/bin/php-cs-fixer fix --dry-run --quiet --allow-risky=yes
+
+test:
+	@docker exec -i $(userAndAppInDocker) php artisan test
+
+route-list:
+	@docker exec -i $(userAndAppInDocker) php artisan route:list

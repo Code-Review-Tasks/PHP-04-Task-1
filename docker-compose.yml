@@ -37,9 +37,24 @@ services:
             - 'sailpostgres:/var/lib/postgresql/data'
         networks:
             - sail
+    postgres_testing:
+        image: postgres:13
+        container_name: postgres_testing
+        environment:
+            POSTGRES_DB: 'php4_1_test'
+            POSTGRES_USER: 'sail_test'
+            POSTGRES_PASSWORD: 'sail_test'
+        ports:
+            - "5434:5432"
+        volumes:
+            - 'sailpostgres_test:/var/lib/postgresql/data'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
 volumes:
     sailpostgres:
+        driver: local
+    sailpostgres_test:
         driver: local

@@ -12,6 +12,7 @@ class ShortLinksService
 {
     public function __construct(
         private TagService $tagService,
+        private UrlShortener $urlShortener,
     ) {
     }
 
@@ -36,7 +37,7 @@ class ShortLinksService
             $shortLink = $issetLink->first();
         } else {
             $shortLink = new ShortLinks();
-            $shortLink->short_url = (new UrlShortener())->encode($shortLinksPostRequestDTO->getLongUrl());
+            $shortLink->short_url = $this->urlShortener->encode($shortLinksPostRequestDTO->getLongUrl());
         }
 
         $shortLink->long_url = $shortLinksPostRequestDTO->getLongUrl();
