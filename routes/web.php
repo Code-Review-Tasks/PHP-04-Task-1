@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\CreateLinks;
 use App\Http\Controllers\DeleteLink;
 use App\Http\Controllers\GetLinks;
 use App\Http\Controllers\GetLinkStats;
 use App\Http\Controllers\GetStats;
 use App\Http\Controllers\FollowLink;
 use App\Http\Controllers\PatchLink;
-use App\Http\Controllers\PostLinks;
 use App\Http\Resources\LinkResource;
 use App\Models\Link;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +26,7 @@ Route::view('/', 'index');
 
 Route::get('links', GetLinks::class);
 Route::get('links/{hash}', fn(string $hash) => new LinkResource(Link::with('tags')->byHash($hash)->firstOrFail()));
-Route::post('links', PostLinks::class);
+Route::post('links', CreateLinks::class);
 Route::patch('links/{hash}', PatchLink::class);
 Route::delete('links/{hash}', DeleteLink::class);
 

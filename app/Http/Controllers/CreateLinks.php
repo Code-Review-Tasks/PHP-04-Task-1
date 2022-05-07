@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 /**
  * Creates links from POST request
  */
-class PostLinks extends Controller
+class CreateLinks extends Controller
 {
     /**
      * Handle the incoming request.
