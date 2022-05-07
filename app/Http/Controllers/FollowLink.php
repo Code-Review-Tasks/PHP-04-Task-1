@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 /**
  * Redirects by short link and saves view information in DB
  */
-class GoByLink extends Controller
+class FollowLink extends Controller
 {
     /**
      * Handle the incoming request.
