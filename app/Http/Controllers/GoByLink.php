@@ -16,7 +16,7 @@ class GoByLink extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request, $hash)
+    public function __invoke(Request $request, string $hash)
     {        
         $link = Link::findByHashOrFail($hash);
 

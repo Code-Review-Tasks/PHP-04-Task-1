@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'index');
 
 Route::get('links', GetLinks::class);
-Route::get('links/{hash}', fn($hash) => Link::with('tags')->byHash($hash)->firstOrFail());
+Route::get('links/{hash}', fn(string $hash) => Link::with('tags')->byHash($hash)->firstOrFail());
 Route::post('links', PostLinks::class);
 Route::patch('links/{hash}', PatchLink::class);
 Route::delete('links/{hash}', DeleteLink::class);
