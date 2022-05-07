@@ -5,8 +5,9 @@ namespace App\Services\ShortLinks;
 use App\DTO\RequestDTO\ShortLinks\ShortLinksListPostRequestDTO;
 use App\DTO\RequestDTO\ShortLinks\ShortLinksPostRequestDTO;
 use App\Libs\UrlShortener\UrlShortener;
-use App\Models\ShortLinks;
+use App\Models\ShortLink;
 use App\Services\Tags\TagService;
+use Illuminate\Database\Eloquent\Collection;
 
 class ShortLinksService
 {
@@ -16,32 +17,34 @@ class ShortLinksService
     ) {
     }
 
-    public function saveLinks(ShortLinksListPostRequestDTO $shortLinksListPostRequestDTO): void
+    /**
+     * @throws \Exception
+     */
+    public function saveLinks(ShortLinksListPostRequestDTO $shortLinksListPostRequestDTO): Collection
     {
-        /** @var $link ShortLinksPostRequestDTO */
+        $result = new Collection();
+
         foreach ($shortLinksListPostRequestDTO->getLinks() as $link) {
-            $this->saveLink($link);
+            $result->add($this->saveLink($link));
         }
+
+        return $result;
     }
 
     /**
      * @throws \Exception
      */
-    public function saveLink(ShortLinksPostRequestDTO $shortLinksPostRequestDTO): void
+    public function saveLink(ShortLinksPostRequestDTO $shortLinksPostRequestDTO): ShortLink
     {
-        $issetLink = ShortLinks::where('long_url', $shortLinksPostRequestDTO->getLongUrl())
-            ->take(1)
-            ->get();
+        $shortLink = new ShortLink();
 
-        if ($issetLink->count() > 0) {
-            $shortLink = $issetLink->first();
-        } else {
-            $shortLink = new ShortLinks();
-            $shortLink->short_url = $this->urlShortener->encode($shortLinksPostRequestDTO->getLongUrl());
-        }
 
         $shortLink->long_url = $shortLinksPostRequestDTO->getLongUrl();
         $shortLink->title = $shortLinksPostRequestDTO->getTitle();
+
+        $shortLink->save();
+
+        $shortLink->short_url = $this->urlShortener->encode($shortLink->id, $shortLinksPostRequestDTO->getLongUrl());
 
         $shortLink->save();
 
@@ -51,9 +54,11 @@ class ShortLinksService
         }
 
         $shortLink->tags()->sync($tagIds);
+
+        return $shortLink;
     }
 
-    public function updateLink(ShortLinksPostRequestDTO $shortLinksPostRequestDTO, ShortLinks $shortLink): void
+    public function updateLink(ShortLinksPostRequestDTO $shortLinksPostRequestDTO, ShortLink $shortLink): ShortLink
     {
         $shortLink->long_url = $shortLinksPostRequestDTO->getLongUrl();
         $shortLink->title = $shortLinksPostRequestDTO->getTitle();
@@ -66,19 +71,21 @@ class ShortLinksService
         $shortLink->tags()->sync($tagIds);
 
         $shortLink->update();
+
+        return $shortLink;
     }
 
-    public function deleteLink(ShortLinks $shortLink): void
+    public function deleteLink(ShortLink $shortLink): void
     {
         $shortLink->delete();
     }
 
-    public function getLinksList(?array $filter): array
+    public function getLinksList(?array $filter): Collection
     {
-        $query = ShortLinks::with('tags');
+        $query = ShortLink::with('tags');
 
         if (isset($filter['title'])) {
-            $query->where('title', $filter['title']);
+            $query->where('title', 'like', '%'.$filter['title'].'%');
         }
 
         if (isset($filter['tags'])) {
@@ -87,6 +94,6 @@ class ShortLinksService
             });
         }
 
-        return $query->get()->toArray();
+        return $query->get();
     }
 }

@@ -7,7 +7,7 @@ use App\DTO\RequestDTO\RequestDTOInterface;
 class ShortLinksListPostRequestDTO implements RequestDTOInterface
 {
     private function __construct(
-        /** @var $link ShortLinksPostRequestDTO */
+        /** @var $links ShortLinksPostRequestDTO[] */
         private array $links,
     ) {
     }
@@ -26,7 +26,7 @@ class ShortLinksListPostRequestDTO implements RequestDTOInterface
     }
 
     /**
-     * @return array
+     * @return ShortLinksPostRequestDTO[]
      */
     public function getLinks(): array
     {

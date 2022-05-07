@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ShortLinks;
+use App\Models\ShortLink;
 use App\Services\Statistics\StatisticsService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -17,13 +17,13 @@ class ShortLinksRedirectController extends Controller
     }
 
     /**
-     * @param ShortLinks $shortLinks
+     * @param ShortLink $shortLink
      * @return RedirectResponse|Application|Redirector
      */
-    public function checkLink(Request $request, ShortLinks $shortLinks): RedirectResponse|Application|Redirector
+    public function checkLink(Request $request, ShortLink $shortLink): RedirectResponse|Application|Redirector
     {
-        $this->statisticsService->createStat($request, $shortLinks);
+        $this->statisticsService->createStat($request, $shortLink);
 
-        return redirect($shortLinks->long_url);
+        return redirect($shortLink->long_url);
     }
 }

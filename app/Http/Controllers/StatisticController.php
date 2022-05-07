@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ShortLinks;
+use App\Models\ShortLink;
 use App\Services\Statistics\StatisticsService;
 use Illuminate\Http\JsonResponse;
 
@@ -14,18 +14,17 @@ class StatisticController extends Controller
     }
 
     /**
-     * @param ShortLinks $shortLinks
+     * @param ShortLink $shortLink
      * @return JsonResponse
      */
-    public function getLinkStats(ShortLinks $shortLinks): JsonResponse
+    public function getLinkStats(ShortLink $shortLink): JsonResponse
     {
-        $linkStats = $this->statisticsService->getLinkStats($shortLinks);
+        $linkStats = $this->statisticsService->getLinkStats($shortLink);
 
         return response()->json($linkStats);
     }
 
     /**
-     * @param ShortLinks $shortLinks
      * @return JsonResponse
      */
     public function getAllStats(): JsonResponse

@@ -7,7 +7,8 @@ use App\DTO\RequestDTO\ShortLinks\ShortLinksPostRequestDTO;
 use App\Http\Requests\ShortLinksGetListRequest;
 use App\Http\Requests\ShortLinksPatchRequest;
 use App\Http\Requests\ShortLinksPostRequest;
-use App\Models\ShortLinks;
+use App\Http\Resources\ShortLinkResource;
+use App\Models\ShortLink;
 use App\Services\ShortLinks\ShortLinksService;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,20 +31,20 @@ class ShortLinksController extends Controller
         $validated = $request->validated();
 
         $shortLinksListPostRequestDTO = ShortLinksListPostRequestDTO::makeFromArray($validated);
-        $this->shortLinksService->saveLinks($shortLinksListPostRequestDTO);
+        $links = $this->shortLinksService->saveLinks($shortLinksListPostRequestDTO);
 
-        return response()->json(['success' => 'ok'], Response::HTTP_CREATED);
+        return response()->json(ShortLinkResource::collection($links)->toArray($request), Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param ShortLinks $shortLinks
+     * @param ShortLink $shortLink
      * @return JsonResponse
      */
-    public function show(ShortLinks $shortLinks): JsonResponse
+    public function show(ShortLink $shortLink): JsonResponse
     {
-        return response()->json($shortLinks->toArray());
+        return response()->json(new ShortLinkResource($shortLink));
     }
 
     /**
@@ -56,8 +57,10 @@ class ShortLinksController extends Controller
     {
         $validated = $request->validated();
 
+        $links = $this->shortLinksService->getLinksList($validated);
+
         return response()->json(
-            $this->shortLinksService->getLinksList($validated)
+            ShortLinkResource::collection($links)->toArray($request)
         );
     }
 
@@ -65,28 +68,28 @@ class ShortLinksController extends Controller
      * Update the specified resource in storage.
      *
      * @param ShortLinksPatchRequest $request
-     * @param ShortLinks $shortLinks
+     * @param ShortLink $shortLink
      * @return JsonResponse
      */
-    public function update(ShortLinksPatchRequest $request, ShortLinks $shortLinks): JsonResponse
+    public function update(ShortLinksPatchRequest $request, ShortLink $shortLink): JsonResponse
     {
         $validated = $request->validated();
 
         $shortLinksPostRequestDTO = ShortLinksPostRequestDTO::makeFromArray($validated);
-        $this->shortLinksService->updateLink($shortLinksPostRequestDTO, $shortLinks);
+        $link = $this->shortLinksService->updateLink($shortLinksPostRequestDTO, $shortLink);
 
-        return response()->json(['success' => 'ok']);
+        return response()->json(new ShortLinkResource($link));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param ShortLinks $shortLinks
+     * @param ShortLink $shortLink
      * @return JsonResponse
      */
-    public function destroy(ShortLinks $shortLinks): JsonResponse
+    public function destroy(ShortLink $shortLink): JsonResponse
     {
-        $this->shortLinksService->deleteLink($shortLinks);
+        $this->shortLinksService->deleteLink($shortLink);
 
         return response()->json(['success' => 'ok']);
     }

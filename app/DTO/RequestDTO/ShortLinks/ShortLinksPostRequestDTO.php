@@ -18,7 +18,7 @@ class ShortLinksPostRequestDTO implements RequestDTOInterface
         return new self(
             $data['long_url'],
             $data['title'] ?? null,
-            $data['tags'] ?? null,
+            array_unique($data['tags']),
         );
     }
 

@@ -10,8 +10,8 @@ class Statistic extends Model
 {
     use HasFactory;
 
-    public function short_links(): BelongsTo
+    public function shortLink(): BelongsTo
     {
-        return $this->belongsTo(ShortLinks::class, 'short_links_id');
+        return $this->belongsTo(ShortLink::class, 'short_link_id');
     }
 }

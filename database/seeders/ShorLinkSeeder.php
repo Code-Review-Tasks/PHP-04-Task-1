@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\ShortLinks;
+use App\Models\ShortLink;
 use Illuminate\Database\Seeder;
 
-class ShorLinksSeeder extends Seeder
+class ShorLinkSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class ShorLinksSeeder extends Seeder
      */
     public function run()
     {
-        ShortLinks::factory()
+        ShortLink::factory()
             ->count(10)
             ->create();
     }

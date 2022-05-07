@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tags extends Model
+class Tag extends Model
 {
     use HasFactory;
 
@@ -15,6 +15,6 @@ class Tags extends Model
 
     public function shortLinks()
     {
-        return $this->belongsToMany(ShortLinks::class, 'tag_short_link');
+        return $this->belongsToMany(ShortLink::class, 'tag_short_link');
     }
 }

@@ -17,11 +17,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/links', [ShortLinksController::class, 'showList']);
-Route::get('/links/{short_links}', [ShortLinksController::class, 'show']);
+Route::get('/links/{shortLink:short_url}', [ShortLinksController::class, 'show']);
 Route::post('/links', [ShortLinksController::class, 'store']);
-Route::patch('/links/{short_links}', [ShortLinksController::class, 'update']);
-Route::delete('/links/{short_links}', [ShortLinksController::class, 'destroy']);
+Route::patch('/links/{shortLink:short_url}', [ShortLinksController::class, 'update']);
+Route::delete('/links/{shortLink:short_url}', [ShortLinksController::class, 'destroy']);
 
-Route::get('/get_link/{short_links:short_url}', [ShortLinksRedirectController::class, 'checkLink']);
+Route::get('/get_link/{shortLink:short_url}', [ShortLinksRedirectController::class, 'checkLink']);
 Route::get('/stats/', [StatisticController::class, 'getAllStats']);
-Route::get('/stats/{short_links:short_url}', [StatisticController::class, 'getLinkStats']);
+Route::get('/stats/{shortLink:short_url}', [StatisticController::class, 'getLinkStats']);

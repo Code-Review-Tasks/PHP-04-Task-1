@@ -17,7 +17,7 @@ class CreateStatisticsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('short_links_id');
             $table->ipAddress('ip');
-            $table->text('user_agent');
+            $table->string('user_agent');
             $table->timestamps();
             $table->date('create_date');
             $table->index(['ip', 'user_agent']);

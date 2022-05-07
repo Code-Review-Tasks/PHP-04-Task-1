@@ -2,7 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\ShortLinks;
+use App\Models\ShortLink;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class ShortLinksControllerTest extends TestCase
@@ -34,16 +35,16 @@ class ShortLinksControllerTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-            ->assertJson([
-                'success' => 'ok',
-            ]);
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->hasAny('0.long_url', 'https://google.com')
+                    ->hasAny('0.title', 'Cool link to google')
+            );
     }
 
-    /** @depends test_store */
     public function test_patch(): void
     {
-        $shortLink = ShortLinks::first();
-        $response = $this->patchJson('/api/links/' . $shortLink->id, [
+        $shortLink = ShortLink::first();
+        $response = $this->patchJson('/api/links/' . $shortLink->short_url, [
             'long_url' => 'https://google.com',
             'title' => 'New link to google',
             'tags' => ['homepage', 'mylinkNew'],
@@ -51,15 +52,15 @@ class ShortLinksControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJson([
-                'success' => 'ok',
+                'long_url' => 'https://google.com',
+                'title' => 'New link to google',
             ]);
     }
 
-    /** @depends test_patch */
     public function test_get(): void
     {
-        $shortLink = ShortLinks::first();
-        $response = $this->get('/api/links/' . $shortLink->id);
+        $shortLink = ShortLink::first();
+        $response = $this->get('/api/links/' . $shortLink->short_url);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -68,24 +69,28 @@ class ShortLinksControllerTest extends TestCase
             ]);
     }
 
-    /** @depends test_patch */
     public function test_delete(): void
     {
-        $shortLink = ShortLinks::first();
-        $response = $this->delete('/api/links/' . $shortLink->id);
+        $shortLink = ShortLink::first();
+        $response = $this->delete('/api/links/' . $shortLink->short_url);
 
         $response->assertStatus(200)
             ->assertJson([
                 'success' => 'ok',
             ]);
+
+        $shortLink = ShortLink::query()->where('id', $shortLink->id)->get();
+        $this->assertEmpty($shortLink);
     }
 
-    /** @depends test_patch */
+    /**
+     * @throws \JsonException
+     */
     public function test_get_list(): void
     {
         $response = $this->get('/api/links');
 
-        $responseData = json_decode($response->getContent(), true);
+        $responseData = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertNotEmpty($responseData);
 
         $response->assertStatus(200);
