@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Hashids\Hashids;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use UnexpectedValueException;
 
@@ -13,19 +13,11 @@ class Link extends Model
     public $timestamps = false;
 
     protected $guarded = ['id'];
-    protected $appends = ['hash'];
-    protected static $hasher;
+    protected $appends = ['hash'];    
 
-    /**
-     * Hashids\Hashids singleton with salt for converting id to hash
-     */
-    public static function getHasher(): Hashids
+    public static function getHasher()
     {
-        if (!self::$hasher) {
-            self::$hasher = new Hashids(env('HASHIDS_SALT', ''));
-        }
-
-        return self::$hasher;
+        return App::make('Hashids\Hashids');
     }
 
     public static function findByHash($hash): ?Link
