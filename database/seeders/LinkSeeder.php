@@ -16,11 +16,9 @@ class LinkSeeder extends Seeder
      */
     public function run(Faker $faker)
     {
-        $urls = file(storage_path('app/demo_urls.txt'), FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES);
-
         for ($i = mt_rand(20, 100); $i > 0; $i--) {
             
-            $data = ['long_url' => $urls[array_rand($urls)]];
+            $data = ['long_url' => $faker->url()];
 
             if (mt_rand(0, 10) > 3) {
                 $data['title'] = ucwords($faker->words(mt_rand(1, 4), true));
