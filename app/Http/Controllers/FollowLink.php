@@ -25,8 +25,6 @@ class FollowLink extends Controller
             'user_agent_md5' => md5($request->userAgent())
         ]);
 
-        $link->recalculateVisits();
-        
         return redirect($link->long_url, 302);
     }
 }
