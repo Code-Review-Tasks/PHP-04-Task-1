@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('links', function (Blueprint $table) {
             $table->id();
-            $table->string("title")->default("")->index();
+            $table->string("title")->default("")->fulltext();
             $table->string("long_url", 2048);
             $table->unsignedInteger("total_views")->default(0);
             $table->unsignedInteger("unique_views")->default(0)->index();

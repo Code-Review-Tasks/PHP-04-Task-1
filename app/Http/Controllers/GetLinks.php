@@ -23,7 +23,7 @@ class GetLinks extends Controller
 
         // Filter by title
         if ($request->has('title')) {
-            $links = $links->where('title', 'like', "%$request->title%");
+            $links = $links->whereRaw("MATCH(title) AGAINST(? IN BOOLEAN MODE)", $request->title);
         }
 
         // Filter by tag
