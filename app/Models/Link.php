@@ -45,7 +45,7 @@ class Link extends Model
      */
     public function recalculateVisits(): Link
     {        
-        $result = DB::table('visits')->selectRaw('COUNT(*) AS total_views, COUNT(DISTINCT ip, user_agent_md5) AS unique_views')->where('link_id', $this->id)->first();
+        $result = DB::table('visits')->selectRaw('COUNT(*) AS total_views, COUNT(DISTINCT ip, user_agent_hash) AS unique_views')->where('link_id', $this->id)->first();
 
         $this->total_views = $result->total_views;
         $this->unique_views = $result->unique_views;

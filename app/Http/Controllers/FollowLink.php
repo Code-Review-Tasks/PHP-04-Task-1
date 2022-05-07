@@ -22,7 +22,7 @@ class FollowLink extends Controller
 
         $link->visits()->create([
             'ip' => $request->ip(),
-            'user_agent_md5' => md5($request->userAgent())
+            'user_agent_hash' => md5($request->userAgent())
         ]);
 
         return redirect($link->long_url, 302);

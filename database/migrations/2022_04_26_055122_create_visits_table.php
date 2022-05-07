@@ -20,9 +20,9 @@ return new class extends Migration
             $table->foreignId('link_id')->constrained()->onDelete('cascade');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'))->index();
             $table->string('ip', '15');
-            $table->string('user_agent_md5', 32);            
+            $table->string('user_agent_hash', 32);
 
-            $table->index(['ip', 'user_agent_md5']);
+            $table->index(['ip', 'user_agent_hash']);
         });
     }
 

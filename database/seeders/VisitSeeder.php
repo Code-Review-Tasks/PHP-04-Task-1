@@ -28,7 +28,7 @@ class VisitSeeder extends Seeder
                     'link_id' => $linkId,
                     'created_at' => $faker->dateTimeBetween('-3 months')->format('Y-m-d H:i:s'),
                     'ip' => $ip,
-                    'user_agent_md5' => $uaMd5
+                    'user_agent_hash' => $uaMd5
                 ]);
 
                 $uaMd5Ips[] = $uaMd5.$ip;
