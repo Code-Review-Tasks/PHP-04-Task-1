@@ -89,7 +89,7 @@ export default {
 
                 const response = await axios.get(this.currentPageUrl, {params: params});
                 this.links = response.data.data;
-                this.paginationLinks = response.data.links;
+                this.paginationLinks = response.data.meta.links;
             } catch (e) {
                 alert("Error");
             }

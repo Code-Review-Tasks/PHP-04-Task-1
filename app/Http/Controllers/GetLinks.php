@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LinkCollection;
 use App\Models\Link;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -33,6 +34,6 @@ class GetLinks extends Controller
             });
         }
 
-        return $links->paginate(10);
+        return new LinkCollection($links->paginate(10));
     }
 }

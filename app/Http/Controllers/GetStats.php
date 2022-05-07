@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LinkCollection;
 use App\Models\Link;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,6 @@ class GetStats extends Controller
      */
     public function __invoke(Request $request)
     {
-        return Link::orderByDesc('unique_views')->get();
+        return new LinkCollection(Link::orderByDesc('unique_views')->get());
     }
 }
