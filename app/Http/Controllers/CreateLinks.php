@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateLinksRequest;
 use App\Models\Link;
 use App\Models\Tag;
-use App\Rules\WorkingUrl;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 /**
  * Creates links from POST request
@@ -19,17 +17,9 @@ class CreateLinks extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(CreateLinksRequest $request)
     {
-        $data = $request->has(0) ? $request->all() : [$request->all()];
-
-        $validator = Validator::make($data, [
-            '*.long_url' => ['bail', 'required', 'url', 'max:2048', new WorkingUrl],
-            '*.title' => 'max:255',
-            '*.tags.*' => 'max:255|regex:@[a-z0-9_]+@i'
-        ]);
-
-        $validator->validate();
+        $data = $request->validated();
         
         $shortUrls = [];
         foreach ($data as $chunk) {

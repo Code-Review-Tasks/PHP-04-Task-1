@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PatchLinkRequest;
 use App\Models\Link;
 use App\Models\Tag;
-use App\Rules\WorkingUrl;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 
 /**
  * Updates link information by hash
@@ -19,15 +17,11 @@ class PatchLink extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request, string $hash)
+    public function __invoke(PatchLinkRequest $request, string $hash)
     {
         $link = Link::findByHashOrFail($hash);
 
-        $data = $request->validate([
-            'long_url' => ['bail', 'required', 'url', 'max:2048', new WorkingUrl],
-            'title' => 'max:255',
-            'tags.*' => 'max:255|distinct|regex:@[a-z0-9_]+@i'
-        ]);
+        $data = $request->validated();
 
         $tagIds = [];
         if (isset($data['tags'])) {
