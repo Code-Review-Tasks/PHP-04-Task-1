@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PatchLinkRequest;
 use App\Models\Link;
-use App\Models\Tag;
+use App\Services\LinkService;
 
 /**
  * Updates link information by hash
  */
 class PatchLink extends Controller
 {
+    public function __construct(
+        private LinkService $linkService
+    ) {}
+
     /**
      * Handle the incoming request.
      *
@@ -23,17 +27,7 @@ class PatchLink extends Controller
 
         $data = $request->validated();
 
-        $tagIds = [];
-        if (isset($data['tags'])) {
-            foreach ($data['tags'] as $tagName) {
-                $tag = Tag::firstOrCreate(['name' => mb_strtolower($tagName)]);
-                $tagIds[] = $tag->id;
-            }
-        }
-
-        $link->tags()->sync($tagIds);
-
-        $link->fill($data)->save();
+        $this->linkService->patchLink($link, $data);
 
         return 'ok';
     }

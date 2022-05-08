@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateLinksRequest;
-use App\Models\Link;
-use App\Models\Tag;
+use App\Services\LinkService;
 
 /**
  * Creates links from POST request
  */
 class CreateLinks extends Controller
 {
+    public function __construct(
+        private LinkService $linkService
+    ) {}
+
     /**
      * Handle the incoming request.
      *
@@ -21,26 +24,7 @@ class CreateLinks extends Controller
     {
         $data = $request->validated();
         
-        $shortUrls = [];
-        foreach ($data as $chunk) {
-            $link = new Link(['long_url' => $chunk['long_url']]);
-
-            if (!empty($chunk['title'])) {
-                $link->title = $chunk['title'];
-            }
-
-            $link->save();
-            
-            if (!empty($chunk['tags'])) {
-                $chunk['tags'] = array_unique($chunk['tags']);
-                foreach ($chunk['tags'] as $tag) {
-                    $tag = Tag::firstOrNew(['name' => mb_strtolower($tag)]);
-                    $link->tags()->save($tag);
-                }
-            }
-
-            $shortUrls[] = $link->hash;
-        }
+        $shortUrls = $this->linkService->createLinks($data);
         
         return $shortUrls;
     }

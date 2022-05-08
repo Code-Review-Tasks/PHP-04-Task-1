@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Link;
+use App\Services\LinkService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Returns link views statistics
  */
 class GetLinkStats extends Controller
 {
+    public function __construct(
+        private LinkService $linkService
+    ) {}
+
     /**
      * Handle the incoming request.
      *
@@ -19,11 +22,6 @@ class GetLinkStats extends Controller
      */
     public function __invoke(Request $request, string $hash)
     {
-        $link = Link::findByHashOrFail($hash);
-
-        $result = DB::table('visits')->selectRaw("DATE_FORMAT(created_at, '%Y-%m-%d') AS day, COUNT(*) AS total_views, COUNT(DISTINCT ip, user_agent_hash) AS unique_views")
-            ->where('link_id', $link->id)->groupBy('day')->orderByDesc('day')->get();
-
-        return $result;
+        return $this->linkService->getStats($hash);
     }
 }

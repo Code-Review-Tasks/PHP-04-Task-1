@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\LinkCollection;
-use App\Models\Link;
+use App\Services\LinkService;
 use Illuminate\Http\Request;
 
 /**
@@ -11,6 +10,10 @@ use Illuminate\Http\Request;
  */
 class GetStats extends Controller
 {
+    public function __construct(
+        private LinkService $linkService
+    ) {}
+
     /**
      * Handle the incoming request.
      *
@@ -19,6 +22,6 @@ class GetStats extends Controller
      */
     public function __invoke(Request $request)
     {
-        return new LinkCollection(Link::orderByDesc('unique_views')->get());
+        return $this->linkService->getTotalStats();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Link;
+use App\Services\LinkService;
 use Illuminate\Http\Request;
 
 /**
@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
  */
 class DeleteLink extends Controller
 {
+    public function __construct(
+        private LinkService $linkService
+    ) {}
+
     /**
      * Handle the incoming request.
      *
@@ -18,7 +22,7 @@ class DeleteLink extends Controller
      */
     public function __invoke(Request $request, string $hash)
     {
-        $link = Link::findByHashOrFail($hash)->delete();
+        $this->linkService->delete($hash);
 
         return 'ok';
     }

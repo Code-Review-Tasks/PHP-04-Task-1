@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Link;
+use App\Services\LinkService;
 use Illuminate\Http\Request;
 
 /**
@@ -10,6 +11,10 @@ use Illuminate\Http\Request;
  */
 class FollowLink extends Controller
 {
+    public function __construct(
+        private LinkService $linkService
+    ) {}
+
     /**
      * Handle the incoming request.
      *
@@ -20,10 +25,7 @@ class FollowLink extends Controller
     {        
         $link = Link::findByHashOrFail($hash);
 
-        $link->visits()->create([
-            'ip' => $request->ip(),
-            'user_agent_hash' => md5($request->userAgent())
-        ]);
+        $this->linkService->addVisit($link, $request);
 
         return redirect($link->long_url, 302);
     }
